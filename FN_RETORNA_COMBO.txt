@@ -1,0 +1,419 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_combo(
+	opcao character varying)
+    RETURNS SETOF biometria.ret_combo 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN 
+ 	IF (opcao = 'naturalidade')
+				THEN
+					return query
+					SELECT cod_uf::integer,dsc_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'estado_civil')
+			THEN
+				return query
+				SELECT cod_estado_civil::integer,dsc_estado_civil
+				FROM corporativo.tb_estado_civil
+				ORDER BY cod_estado_civil;
+	END IF;
+	IF (opcao = 'nacionalidade')
+				THEN
+					return query
+					SELECT cod_pais,dsc_nacionalidade
+					FROM corporativo.tb_nacionalidade
+					ORDER BY cod_pais;
+	END IF;
+	
+	IF (opcao = 'uf')
+				THEN
+					return query
+					SELECT cod_uf, sgl_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+END;
+$BODY$;
+
+
+---------------------------------------------------------------VERSÃO 4
+
+
+--DROP FUNCTION biometria.fn_retorna_combo
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_combo(
+	opcao character varying)
+    RETURNS SETOF biometria.ret_combo 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN 
+ 	IF (opcao = 'naturalidade')
+				THEN
+					return query
+					SELECT cod_uf::integer,dsc_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'estado_civil')
+			THEN
+				return query
+				SELECT cod_estado_civil::integer,dsc_estado_civil
+				FROM corporativo.tb_estado_civil
+				ORDER BY cod_estado_civil;
+	END IF;
+	IF (opcao = 'nacionalidade')
+				THEN
+					return query
+					SELECT cod_pais,dsc_nacionalidade
+					FROM corporativo.tb_nacionalidade
+					ORDER BY cod_pais;
+	END IF;
+	
+	IF (opcao = 'uf')
+				THEN
+					return query
+					SELECT cod_uf, sgl_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'comportamento')
+				THEN
+					return query
+					SELECT cod_tipo_comportamento_reservista,dsc_tipo_comportamento_reservista
+					FROM corporativo.tb_comportamento_reservista 
+					ORDER BY cod_tipo_comportamento_reservista;
+	END IF;			
+	IF (opcao = 'tipo_cnh')
+				THEN
+					return query
+					SELECT cod_cnh, dsc_tipo_cnh
+					FROM corporativo.tb_tipo_cnh
+					ORDER BY cod_cnh;
+	END IF;
+	IF (opcao = 'orgao_expedidor')
+				THEN
+					return query
+				SELECT cod_orgao_expedidor, nom_orgao_expedidor
+				FROM corporativo.tb_orgao_expedidor
+				WHERE cod_orgao_expedidor IN (33, 36, 20, 21, 22)
+				ORDER BY cod_orgao_expedidor;
+	END IF;
+	IF (opcao = 'reservista')
+				THEN
+					return query
+				SELECT cod_tipo_identificacao, dsc_tipo_identificacao
+				FROM corporativo.tb_tipo_identificacao
+				WHERE cod_tipo_identificacao IN (7, 8, 10, 63, 64, 65, 66)
+				ORDER BY cod_tipo_identificacao;
+	END IF;
+	
+	IF (opcao = 'lingua_estrangeira')
+				THEN
+					return query
+				SELECT cod_tipo_lingua_estrangeira, dsc_tipo_lingua_estrangeira
+				FROM corporativo.tb_tipo_lingua_estrangeira
+				ORDER BY cod_tipo_lingua_estrangeira;
+	END IF;
+	
+	IF (opcao = 'tipo_graduacao')
+				THEN
+					return query
+				SELECT cod_tipo_graduacao, dsc_tipo_graduacao
+				FROM corporativo.tb_tipo_graduacao
+				ORDER BY cod_tipo_graduacao;
+	END IF;
+	
+	IF (opcao = 'nivel_escolaridade')
+				THEN
+					return query
+				SELECT cod_nivel_escolaridade::integer, dsc_nivel_escolaridade
+				FROM corporativo.tb_nivel_escolaridade
+				ORDER BY cod_nivel_escolaridade;
+	END IF;
+	
+	IF (opcao = 'area_formacao')
+				THEN
+					return query
+				SELECT cod_area_formacao, dsc_area_formacao
+				FROM recadastramento.tb_area_formacao
+				ORDER BY cod_area_formacao;
+	END IF;
+END;
+
+$BODY$;
+
+--SELECT * FROM biometria.fn_retorna_combo ('orgao_expedidor')
+
+
+
+---------------------------------------------------------------VERSÃO 5
+
+
+
+
+
+--DROP FUNCTION biometria.fn_retorna_combo
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_combo(
+	opcao character varying)
+    RETURNS SETOF biometria.ret_combo 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN 
+ 	IF (opcao = 'naturalidade')
+				THEN
+					return query
+					SELECT cod_uf::integer,dsc_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'estado_civil')
+			THEN
+				return query
+				SELECT cod_estado_civil::integer,dsc_estado_civil
+				FROM corporativo.tb_estado_civil
+				ORDER BY cod_estado_civil;
+	END IF;
+	IF (opcao = 'nacionalidade')
+				THEN
+					return query
+					SELECT cod_pais,dsc_nacionalidade
+					FROM corporativo.tb_nacionalidade
+					ORDER BY cod_pais;
+	END IF;
+	
+	IF (opcao = 'uf')
+				THEN
+					return query
+					SELECT cod_uf, sgl_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'comportamento')
+				THEN
+					return query
+					SELECT cod_tipo_comportamento_reservista,dsc_tipo_comportamento_reservista
+					FROM corporativo.tb_comportamento_reservista 
+					ORDER BY cod_tipo_comportamento_reservista;
+	END IF;			
+	IF (opcao = 'tipo_cnh')
+				THEN
+					return query
+					SELECT cod_cnh, dsc_tipo_cnh
+					FROM corporativo.tb_tipo_cnh
+					ORDER BY cod_cnh;
+	END IF;
+	IF (opcao = 'orgao_expedidor')
+				THEN
+					return query
+				SELECT cod_orgao_expedidor, nom_orgao_expedidor
+				FROM corporativo.tb_orgao_expedidor
+				WHERE cod_orgao_expedidor IN (33, 36, 20, 21, 22)
+				ORDER BY cod_orgao_expedidor;
+	END IF;
+	IF (opcao = 'reservista')
+				THEN
+					return query
+				SELECT cod_tipo_identificacao, dsc_tipo_identificacao
+				FROM corporativo.tb_tipo_identificacao
+				WHERE cod_tipo_identificacao IN (7, 8, 10, 63, 64, 65, 66)
+				ORDER BY cod_tipo_identificacao;
+	END IF;
+	
+	IF (opcao = 'lingua_estrangeira')
+				THEN
+					return query
+				SELECT cod_tipo_lingua_estrangeira, dsc_tipo_lingua_estrangeira
+				FROM corporativo.tb_tipo_lingua_estrangeira
+				ORDER BY cod_tipo_lingua_estrangeira;
+	END IF;
+	
+	IF (opcao = 'tipo_graduacao')
+				THEN
+					return query
+				SELECT cod_tipo_graduacao, dsc_tipo_graduacao
+				FROM corporativo.tb_tipo_graduacao
+				ORDER BY cod_tipo_graduacao;
+	END IF;
+	
+	IF (opcao = 'nivel_escolaridade')
+				THEN
+					return query
+				SELECT cod_nivel_escolaridade::integer, dsc_nivel_escolaridade
+				FROM corporativo.tb_nivel_escolaridade
+				ORDER BY cod_nivel_escolaridade;
+	END IF;
+	
+	IF (opcao = 'area_formacao')
+				THEN
+					return query
+				SELECT cod_area_formacao, dsc_area_formacao
+				FROM recadastramento.tb_area_formacao
+				ORDER BY cod_area_formacao;
+	END IF;
+	
+	IF (opcao = 'banco')
+				THEN
+					return query
+				SELECT cod_banco::integer, nom_banco
+				FROM corporativo.tb_banco
+				ORDER BY cod_banco;
+	END IF;
+	
+	
+	IF (opcao = 'certidao')
+				THEN
+					return query
+				SELECT cod_tipo_certidao_declarao, dsc_tipo_certidao_declarao
+				FROM corporativo.tb_tipo_certidao_declarao
+				ORDER BY cod_tipo_certidao_declarao;
+	END IF;
+END;
+
+$BODY$;
+
+--SELECT * FROM biometria.fn_retorna_combo ('banco')
+
+
+
+-------------------------------------------------------------versão 06 (ADD CERTIDÃO)
+
+
+--DROP FUNCTION biometria.fn_retorna_combo
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_combo(
+	opcao character varying)
+    RETURNS SETOF biometria.ret_combo 
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+BEGIN 
+ 	IF (opcao = 'naturalidade')
+				THEN
+					return query
+					SELECT cod_uf::integer,dsc_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'estado_civil')
+			THEN
+				return query
+				SELECT cod_estado_civil::integer,dsc_estado_civil
+				FROM corporativo.tb_estado_civil
+				ORDER BY cod_estado_civil;
+	END IF;
+	IF (opcao = 'nacionalidade')
+				THEN
+					return query
+					SELECT cod_pais,dsc_nacionalidade
+					FROM corporativo.tb_nacionalidade
+					ORDER BY cod_pais;
+	END IF;
+	
+	IF (opcao = 'uf')
+				THEN
+					return query
+					SELECT cod_uf, sgl_uf
+					FROM corporativo.tb_uf
+					ORDER BY cod_uf;
+	END IF;
+	IF (opcao = 'comportamento')
+				THEN
+					return query
+					SELECT cod_tipo_comportamento_reservista,dsc_tipo_comportamento_reservista
+					FROM corporativo.tb_comportamento_reservista 
+					ORDER BY cod_tipo_comportamento_reservista;
+	END IF;			
+	IF (opcao = 'tipo_cnh')
+				THEN
+					return query
+					SELECT cod_cnh, dsc_tipo_cnh
+					FROM corporativo.tb_tipo_cnh
+					ORDER BY cod_cnh;
+	END IF;
+	IF (opcao = 'orgao_expedidor')
+				THEN
+					return query
+				SELECT cod_orgao_expedidor, nom_orgao_expedidor
+				FROM corporativo.tb_orgao_expedidor
+				WHERE cod_orgao_expedidor IN (33, 36, 20, 21, 22)
+				ORDER BY cod_orgao_expedidor;
+	END IF;
+	IF (opcao = 'reservista')
+				THEN
+					return query
+				SELECT cod_tipo_identificacao, dsc_tipo_identificacao
+				FROM corporativo.tb_tipo_identificacao
+				WHERE cod_tipo_identificacao IN (7, 8, 10, 63, 64, 65, 66)
+				ORDER BY cod_tipo_identificacao;
+	END IF;
+	
+	IF (opcao = 'lingua_estrangeira')
+				THEN
+					return query
+				SELECT cod_tipo_lingua_estrangeira, dsc_tipo_lingua_estrangeira
+				FROM corporativo.tb_tipo_lingua_estrangeira
+				ORDER BY cod_tipo_lingua_estrangeira;
+	END IF;
+	
+	IF (opcao = 'tipo_graduacao')
+				THEN
+					return query
+				SELECT cod_tipo_graduacao, dsc_tipo_graduacao
+				FROM corporativo.tb_tipo_graduacao
+				ORDER BY cod_tipo_graduacao;
+	END IF;
+	
+	IF (opcao = 'nivel_escolaridade')
+				THEN
+					return query
+				SELECT cod_nivel_escolaridade::integer, dsc_nivel_escolaridade
+				FROM corporativo.tb_nivel_escolaridade
+				ORDER BY cod_nivel_escolaridade;
+	END IF;
+	
+	IF (opcao = 'area_formacao')
+				THEN
+					return query
+				SELECT cod_area_formacao, dsc_area_formacao
+				FROM recadastramento.tb_area_formacao
+				ORDER BY cod_area_formacao;
+	END IF;
+	
+	IF (opcao = 'banco')
+				THEN
+					return query
+				SELECT cod_banco::integer, nom_banco
+				FROM corporativo.tb_banco
+				ORDER BY cod_banco;
+	END IF;
+	
+	
+	IF (opcao = 'certidao')
+				THEN
+					return query
+				SELECT cod_tipo_certidao_declarao, dsc_tipo_certidao_declarao
+				FROM corporativo.tb_tipo_certidao_declarao
+				ORDER BY cod_tipo_certidao_declarao;
+	END IF;
+END;
+
+$BODY$;
+
+--DROP FUNCTION biometria.fn_retorna_combo(character varying);
+
+--SELECT * FROM biometria.fn_retorna_combo ('certidao')

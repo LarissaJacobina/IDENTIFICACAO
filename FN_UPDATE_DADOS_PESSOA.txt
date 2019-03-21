@@ -1,0 +1,215 @@
+﻿CREATE OR REPLACE FUNCTION biometria.fn_update_dados_pessoa(
+	_cod_pessoa integer,
+	_nom_completo_pessoa character varying,
+	_num_cpf_pessoa character varying,
+	_dat_nascimento_pessoa date,
+	_nom_pai_pessoa character varying,
+	_nom_mae_pessoa character varying,
+	_cod_tipo_sanguineo integer,
+	_num_pispasep character varying,
+	_cod_sexo integer,
+	_cod_uf_naturalidade integer,
+	_cod_localidade_naturalidade integer,
+	_cod_nivel_escolaridade integer,
+	_cod_raca_cor_etnia integer,
+	_dsc_endereco character varying,
+	_dsc_complemento_endereco character varying,
+	_cep_endereco character varying,
+	_cod_uf integer,
+	_cod_localidade integer,
+	_cod_bairro integer,
+	_dsc_telefone_pessoa character varying,
+	_dsc_celular_pessoa character varying,
+	_dsc_email_pessoa character varying,
+	_num_cpf_mae character varying,
+	_cod_pais_naturalidade_mae integer,
+	_cod_uf_naturalidade_mae integer,
+	_cod_localidade_naturalidade_mae integer,
+	_dat_nascimento_mae date,
+	_cod_estado_civil_mae integer,
+	_num_cpf_pai character varying,
+	_cod_pais_naturalidade_pai integer,
+	_cod_uf_naturalidade_pai integer,
+	_cod_localidade_naturalidade_pai integer,
+	_dat_nascimento_pai date,
+	_cod_estado_civil_pai integer)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+DECLARE
+	cod_pai INTEGER;
+	cod_mae INTEGER;
+
+BEGIN
+
+	-- UPDATE DOS DADOS DO CANDIDATO NA TB_PESSOA
+	UPDATE corporativo.tb_pessoa 
+	     SET
+		nom_completo_pessoa = _nom_completo_pessoa,
+		num_cpf_pessoa = _num_cpf_pessoa,
+		dat_nascimento_pessoa = _dat_nascimento_pessoa,
+		nom_pai_pessoa = _nom_pai_pessoa,
+		nom_mae_pessoa = _nom_mae_pessoa,
+		cod_tipo_sanguineo = _cod_tipo_sanguineo,
+		num_pispasep = _num_pispasep,
+		cod_sexo = _cod_sexo,
+		cod_uf_naturalidade = _cod_uf_naturalidade,
+		cod_localidade_naturalidade = _cod_localidade_naturalidade,
+		cod_nivel_escolaridade = _cod_nivel_escolaridade,
+		cod_raca_cor_etnia = _cod_raca_cor_etnia
+	WHERE cod_pessoa = _cod_pessoa;
+	
+	-- UPDATE DO ENDEREÇO DO CANDIDATO
+	UPDATE corporativo.tb_endereco_pessoa 
+	     SET
+		
+		dsc_endereco = _dsc_endereco,
+		dsc_complemento_endereco = _dsc_complemento_endereco,
+		cep_endereco = _cep_endereco,
+		cod_uf = _cod_uf,
+		cod_localidade = _cod_localidade,
+		cod_bairro = _cod_bairro
+	WHERE cod_pessoa = _cod_pessoa;
+
+	-- UPDATE DOS CONTATOS DO CANDIDATO
+	UPDATE corporativo.tb_contato_pessoa 
+	     SET
+		dsc_contato_pessoa = _dsc_telefone_pessoa,
+		cod_tipo_contato = 1,
+		flg_preferencial = TRUE
+	WHERE cod_pessoa = _cod_pessoa;	
+		
+	UPDATE corporativo.tb_contato_pessoa 
+	     SET
+		dsc_contato_pessoa = _dsc_celular_pessoa,
+		cod_tipo_contato = 2,
+		flg_preferencial = TRUE
+	WHERE cod_pessoa = _cod_pessoa;
+		
+	UPDATE corporativo.tb_contato_pessoa 
+	     SET
+		dsc_contato_pessoa = _dsc_email_pessoa,
+		cod_tipo_contato = 4,
+		flg_preferencial = TRUE
+	WHERE cod_pessoa = _cod_pessoa;		
+	
+----------------------------------------------------		
+	-- DADOS DA MÃE
+	cod_mae := (SELECT cod_pessoa FROM corporativo.tb_pessoa WHERE num_cpf_pessoa = _num_cpf_mae);
+	IF (cod_mae IS NOT NULL) THEN
+			-- UPDATE DOS DADOS DA MÃE NA TB_PESSOA
+			UPDATE corporativo.tb_pessoa
+	     	     	     SET
+				nom_completo_pessoa = _nom_mae_pessoa,
+				num_cpf_pessoa = _num_cpf_mae,
+				dat_nascimento_pessoa = _dat_nascimento_mae,
+				cod_pais_naturalidade = _cod_pais_naturalidade_mae,
+				cod_uf_naturalidade = _cod_uf_naturalidade_mae,
+				cod_localidade_naturalidade = _cod_localidade_naturalidade_mae
+				
+			WHERE cod_pessoa = cod_mae;
+
+			-- UPDATE DO ESTADO CIVIL DA MÃE
+			UPDATE corporativo.tb_estado_civil_pessoa 
+		     	     SET
+				cod_pessoa = cod_mae,
+				cod_estado_civil = _cod_estado_civil_mae,
+				dat_estado_civil = '1900-01-01'
+			WHERE cod_pessoa = cod_mae;
+
+		ELSE 
+			-- INSERINDO OS DADOS DA MÃE NA TB_PESSOA
+			INSERT INTO corporativo.tb_pessoa (
+				nom_completo_pessoa,
+				num_cpf_pessoa,
+				dat_nascimento_pessoa,
+				cod_pais_naturalidade, 
+				cod_uf_naturalidade,
+				cod_localidade_naturalidade		
+				) values (
+				_nom_mae_pessoa,
+				_num_cpf_mae,
+				_dat_nascimento_mae,
+				_cod_pais_naturalidade_mae,
+				_cod_uf_naturalidade_mae,
+				_cod_localidade_naturalidade_mae
+				);
+
+			-- PEGANDO O COD_PESSOA DA MAE
+			cod_mae := (SELECT cod_pessoa FROM corporativo.tb_pessoa WHERE num_cpf_pessoa = _num_cpf_mae);
+	
+			-- INSERINDO ESTADO CIVIL DA MÃE
+			INSERT INTO corporativo.tb_estado_civil_pessoa (
+			cod_pessoa,
+			cod_estado_civil,
+			dat_estado_civil
+			) VALUES (
+			cod_mae,
+			_cod_estado_civil_mae,
+			'1900-01-01'
+			);
+	END IF;
+	
+	-- DADOS DO PAI
+	cod_pai := (SELECT cod_pessoa FROM corporativo.tb_pessoa WHERE num_cpf_pessoa = _num_cpf_pai) ;
+	IF (cod_pai IS NOT NULL) THEN
+			-- UPDATE DOS DADOS DA MÃE NA TB_PESSOA
+			UPDATE corporativo.tb_pessoa
+	     	     	     SET
+				nom_completo_pessoa = _nom_pai_pessoa,
+				num_cpf_pessoa = _num_cpf_pai,
+				dat_nascimento_pessoa = _dat_nascimento_pai,
+				cod_pais_naturalidade = _cod_pais_naturalidade_pai,
+				cod_uf_naturalidade = _cod_uf_naturalidade_pai,
+				cod_localidade_naturalidade = _cod_localidade_naturalidade_pai
+			WHERE cod_pessoa = cod_pai;
+
+			-- UPDATE DO ESTADO CIVIL DA PAI
+			UPDATE corporativo.tb_estado_civil_pessoa 
+		     	     SET
+				cod_pessoa = cod_pai,
+				cod_estado_civil = _cod_estado_civil_pai,
+				dat_estado_civil = '1900-01-01'
+			WHERE cod_pessoa = cod_pai;
+
+		ELSE 
+			
+			-- INSERINDO OS DADOS DO PAI NA TB_PESSOA
+			INSERT INTO corporativo.tb_pessoa (
+			nom_completo_pessoa,
+			num_cpf_pessoa,
+			dat_nascimento_pessoa,
+			cod_pais_naturalidade, 
+			cod_uf_naturalidade,
+			cod_localidade_naturalidade		
+			) values (
+			_nom_pai_pessoa,
+			_num_cpf_pai,
+			_dat_nascimento_pai,
+			_cod_pais_naturalidade_pai,
+			_cod_uf_naturalidade_pai,
+			_cod_localidade_naturalidade_pai
+			);
+		
+			-- PEGANDO O COD_PESSOA DO PAI
+			cod_pai := (SELECT cod_pessoa FROM corporativo.tb_pessoa WHERE num_cpf_pessoa = _num_cpf_pai);
+	
+			-- INSERINDO ESTADO CIVIL DO PAI
+			INSERT INTO corporativo.tb_estado_civil_pessoa (
+			cod_pessoa,
+			cod_estado_civil,
+			dat_estado_civil
+			) VALUES (
+			cod_pai,
+			_cod_estado_civil_pai,
+			'1900-01-01'
+			);
+	END	IF;
+END;
+
+$BODY$;
+

@@ -1,0 +1,215 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_dados_pessoa(cod_pessoa bigint)
+	RETURNS SETOF biometria.ret_dados_pessoa
+    LANGUAGE 'sql'
+	
+AS $BODY$
+	 
+IF (cod_pessoa is NOT NULL)
+	THEN
+	RETURN QUERY
+	SELECT DISTINCT
+	p.cod_pessoa,
+	p.nom_completo_pessoa,
+	p.num_cpf_pessoa cpf,
+	ts.dsc_tipo_sanguineo tipo_sanguineo,
+	p.dat_nascimento_pessoa nascimento,
+	extract(year from age(p.dat_nascimento_pessoa)) IDADE,
+	p.nom_mae_pessoa nome_mae,					  
+	p.nom_pai_pessoa nome_pai,
+	nac.cod_nacionalidade,
+	nac2.dsc_nacionalidade nacionalidade,
+	ufn.dsc_uf uf_naturalidade,
+	ufn.sgl_uf sgl_naturalidade,
+	p.cod_uf_naturalidade,
+	cep.cep_endereco cep,
+	cep.dsc_endereco endereco,
+	cep.cod_endereco_pessoa,
+	cep.dsc_complemento_endereco complemento,
+	cep.cod_uf,
+	uf.sgl_uf uf,
+	cep.cod_localidade,
+	loc.dsc_localidade cidade,					  
+	cep.cod_bairro,
+	bairro.dsc_bairro bairro,
+	cont_email.dsc_contato_pessoa endereco_eletronico,
+	cont_tel.dsc_contato_pessoa celular,
+	cont_cel.dsc_contato_pessoa fone_residencial
+
+FROM corporativo.tb_pessoa p
+		LEFT JOIN corporativo.tb_uf ufn ON ufn.cod_uf = p.cod_uf_naturalidade
+		LEFT JOIN corporativo.tb_pais pais ON pais.cod_pais = p.cod_pais_naturalidade
+		LEFT JOIN corporativo.tb_nacionalidade_pessoa nac ON nac.cod_pessoa = p.cod_pessoa 
+		LEFT JOIN corporativo.tb_nacionalidade nac2 ON nac2.cod_nacionalidade = nac.cod_nacionalidade
+		LEFT JOIN corporativo.tb_endereco_pessoa cep ON cep.cod_pessoa = p.cod_pessoa and cep.flg_preferencial = true
+		LEFT JOIN corporativo.tb_bairro bairro ON bairro.cod_bairro = cep.cod_bairro
+		LEFT JOIN corporativo.tb_uf uf ON uf.cod_uf = cep.cod_uf
+		LEFT JOIN corporativo.tb_localidade loc ON loc.cod_localidade = cep.cod_localidade
+		LEFT JOIN corporativo.tb_contato_pessoa cont_email ON cont_email.cod_pessoa = p.cod_pessoa AND cont_email.cod_tipo_contato = 4 and cont_email.flg_preferencial is true
+		LEFT JOIN corporativo.tb_contato_pessoa cont_tel ON cont_tel.cod_pessoa = p.cod_pessoa AND cont_tel.cod_tipo_contato = 1 and cont_tel.flg_preferencial is true
+		LEFT JOIN corporativo.tb_contato_pessoa cont_cel ON cont_cel.cod_pessoa = p.cod_pessoa AND cont_cel.cod_tipo_contato = 2 and cont_cel.flg_preferencial = true	
+		LEFT JOIN corporativo.tb_tipo_sanguineo ts ON ts.cod_tipo_sanguineo = p.cod_tipo_sanguineo				  
+	
+		WHERE p.cod_pessoa = $1
+																																					  
+ELSE
+	THEN
+	RETURN QUERY
+	SELECT DISTINCT
+	p.cod_pessoa,
+	p.nom_completo_pessoa,
+	p.num_cpf_pessoa cpf,
+	ts.dsc_tipo_sanguineo tipo_sanguineo,
+	p.dat_nascimento_pessoa nascimento,
+	extract(year from age(p.dat_nascimento_pessoa)) IDADE,
+	p.nom_mae_pessoa nome_mae,					  
+	p.nom_pai_pessoa nome_pai,
+	nac.cod_nacionalidade,
+	nac2.dsc_nacionalidade nacionalidade,
+	ufn.dsc_uf uf_naturalidade,
+	ufn.sgl_uf sgl_naturalidade,
+	p.cod_uf_naturalidade,
+	cep.cep_endereco cep,
+	cep.dsc_endereco endereco,
+	cep.cod_endereco_pessoa,
+	cep.dsc_complemento_endereco complemento,
+	cep.cod_uf,
+	uf.sgl_uf uf,
+	cep.cod_localidade,
+	loc.dsc_localidade cidade,					  
+	cep.cod_bairro,
+	bairro.dsc_bairro bairro,
+	cont_email.dsc_contato_pessoa endereco_eletronico,
+	cont_tel.dsc_contato_pessoa celular,
+	cont_cel.dsc_contato_pessoa fone_residencial
+
+FROM corporativo.tb_pessoa p
+		LEFT JOIN corporativo.tb_uf ufn ON ufn.cod_uf = p.cod_uf_naturalidade
+		LEFT JOIN corporativo.tb_pais pais ON pais.cod_pais = p.cod_pais_naturalidade
+		LEFT JOIN corporativo.tb_nacionalidade_pessoa nac ON nac.cod_pessoa = p.cod_pessoa 
+		LEFT JOIN corporativo.tb_nacionalidade nac2 ON nac2.cod_nacionalidade = nac.cod_nacionalidade
+		LEFT JOIN corporativo.tb_endereco_pessoa cep ON cep.cod_pessoa = p.cod_pessoa and cep.flg_preferencial = true
+		LEFT JOIN corporativo.tb_bairro bairro ON bairro.cod_bairro = cep.cod_bairro
+		LEFT JOIN corporativo.tb_uf uf ON uf.cod_uf = cep.cod_uf
+		LEFT JOIN corporativo.tb_localidade loc ON loc.cod_localidade = cep.cod_localidade
+		LEFT JOIN corporativo.tb_contato_pessoa cont_email ON cont_email.cod_pessoa = p.cod_pessoa AND cont_email.cod_tipo_contato = 4 and cont_email.flg_preferencial is true
+		LEFT JOIN corporativo.tb_contato_pessoa cont_tel ON cont_tel.cod_pessoa = p.cod_pessoa AND cont_tel.cod_tipo_contato = 1 and cont_tel.flg_preferencial is true
+		LEFT JOIN corporativo.tb_contato_pessoa cont_cel ON cont_cel.cod_pessoa = p.cod_pessoa AND cont_cel.cod_tipo_contato = 2 and cont_cel.flg_preferencial = true	
+		LEFT JOIN corporativo.tb_tipo_sanguineo ts ON ts.cod_tipo_sanguineo = p.cod_tipo_sanguineo				  
+END IF;
+$BODY$;
+
+
+
+
+
+
+
+
+-------------------------------------------------VERSÃO 2
+
+
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_dados_pessoa(cod_pessoa bigint)
+	RETURNS SETOF biometria.ret_dados_pessoa
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+BEGIN	 
+		IF (cod_pessoa IS NOT NULL)
+			THEN
+				RETURN QUERY
+				SELECT DISTINCT
+				p.cod_pessoa,
+				p.nom_completo_pessoa,
+				p.num_cpf_pessoa cpf,
+				ts.dsc_tipo_sanguineo tipo_sanguineo,
+				p.dat_nascimento_pessoa nascimento,
+				extract(year from age(p.dat_nascimento_pessoa)) IDADE,
+				p.nom_mae_pessoa nome_mae,					  
+				p.nom_pai_pessoa nome_pai,
+				nac.cod_nacionalidade,
+				nac2.dsc_nacionalidade nacionalidade,
+				ufn.dsc_uf uf_naturalidade,
+				ufn.sgl_uf sgl_naturalidade,
+				p.cod_uf_naturalidade,
+				cep.cep_endereco cep,
+				cep.dsc_endereco endereco,
+				cep.cod_endereco_pessoa,
+				cep.dsc_complemento_endereco complemento,
+				cep.cod_uf,
+				uf.sgl_uf uf,
+				cep.cod_localidade,
+				loc.dsc_localidade cidade,					  
+				cep.cod_bairro,
+				bairro.dsc_bairro bairro,
+				cont_email.dsc_contato_pessoa endereco_eletronico,
+				cont_tel.dsc_contato_pessoa celular,
+				cont_cel.dsc_contato_pessoa fone_residencial
+
+				FROM corporativo.tb_pessoa p
+						LEFT JOIN corporativo.tb_uf ufn ON ufn.cod_uf = p.cod_uf_naturalidade
+						LEFT JOIN corporativo.tb_pais pais ON pais.cod_pais = p.cod_pais_naturalidade
+						LEFT JOIN corporativo.tb_nacionalidade_pessoa nac ON nac.cod_pessoa = p.cod_pessoa 
+						LEFT JOIN corporativo.tb_nacionalidade nac2 ON nac2.cod_nacionalidade = nac.cod_nacionalidade
+						LEFT JOIN corporativo.tb_endereco_pessoa cep ON cep.cod_pessoa = p.cod_pessoa and cep.flg_preferencial = true
+						LEFT JOIN corporativo.tb_bairro bairro ON bairro.cod_bairro = cep.cod_bairro
+						LEFT JOIN corporativo.tb_uf uf ON uf.cod_uf = cep.cod_uf
+						LEFT JOIN corporativo.tb_localidade loc ON loc.cod_localidade = cep.cod_localidade
+						LEFT JOIN corporativo.tb_contato_pessoa cont_email ON cont_email.cod_pessoa = p.cod_pessoa AND cont_email.cod_tipo_contato = 4 and cont_email.flg_preferencial is true
+						LEFT JOIN corporativo.tb_contato_pessoa cont_tel ON cont_tel.cod_pessoa = p.cod_pessoa AND cont_tel.cod_tipo_contato = 1 and cont_tel.flg_preferencial is true
+						LEFT JOIN corporativo.tb_contato_pessoa cont_cel ON cont_cel.cod_pessoa = p.cod_pessoa AND cont_cel.cod_tipo_contato = 2 and cont_cel.flg_preferencial = true	
+						LEFT JOIN corporativo.tb_tipo_sanguineo ts ON ts.cod_tipo_sanguineo = p.cod_tipo_sanguineo				  
+						WHERE p.cod_pessoa = $1;
+END IF;
+		IF (cod_pessoa IS NULL)
+				THEN
+					RETURN QUERY
+					SELECT DISTINCT
+					p.cod_pessoa,
+					p.nom_completo_pessoa,
+					p.num_cpf_pessoa cpf,
+					ts.dsc_tipo_sanguineo tipo_sanguineo,
+					p.dat_nascimento_pessoa nascimento,
+					extract(year from age(p.dat_nascimento_pessoa)) IDADE,
+					p.nom_mae_pessoa nome_mae,					  
+					p.nom_pai_pessoa nome_pai,
+					nac.cod_nacionalidade,
+					nac2.dsc_nacionalidade nacionalidade,
+					ufn.dsc_uf uf_naturalidade,
+					ufn.sgl_uf sgl_naturalidade,
+					p.cod_uf_naturalidade,
+					cep.cep_endereco cep,
+					cep.dsc_endereco endereco,
+					cep.cod_endereco_pessoa,
+					cep.dsc_complemento_endereco complemento,
+					cep.cod_uf,
+					uf.sgl_uf uf,
+					cep.cod_localidade,
+					loc.dsc_localidade cidade,					  
+					cep.cod_bairro,
+					bairro.dsc_bairro bairro,
+					cont_email.dsc_contato_pessoa endereco_eletronico,
+					cont_tel.dsc_contato_pessoa celular,
+					cont_cel.dsc_contato_pessoa fone_residencial
+
+				FROM corporativo.tb_pessoa p
+						LEFT JOIN corporativo.tb_uf ufn ON ufn.cod_uf = p.cod_uf_naturalidade
+						LEFT JOIN corporativo.tb_pais pais ON pais.cod_pais = p.cod_pais_naturalidade
+						LEFT JOIN corporativo.tb_nacionalidade_pessoa nac ON nac.cod_pessoa = p.cod_pessoa 
+						LEFT JOIN corporativo.tb_nacionalidade nac2 ON nac2.cod_nacionalidade = nac.cod_nacionalidade
+						LEFT JOIN corporativo.tb_endereco_pessoa cep ON cep.cod_pessoa = p.cod_pessoa and cep.flg_preferencial = true
+						LEFT JOIN corporativo.tb_bairro bairro ON bairro.cod_bairro = cep.cod_bairro
+						LEFT JOIN corporativo.tb_uf uf ON uf.cod_uf = cep.cod_uf
+						LEFT JOIN corporativo.tb_localidade loc ON loc.cod_localidade = cep.cod_localidade
+						LEFT JOIN corporativo.tb_contato_pessoa cont_email ON cont_email.cod_pessoa = p.cod_pessoa AND cont_email.cod_tipo_contato = 4 and cont_email.flg_preferencial is true
+						LEFT JOIN corporativo.tb_contato_pessoa cont_tel ON cont_tel.cod_pessoa = p.cod_pessoa AND cont_tel.cod_tipo_contato = 1 and cont_tel.flg_preferencial is true
+						LEFT JOIN corporativo.tb_contato_pessoa cont_cel ON cont_cel.cod_pessoa = p.cod_pessoa AND cont_cel.cod_tipo_contato = 2 and cont_cel.flg_preferencial = true	
+						LEFT JOIN corporativo.tb_tipo_sanguineo ts ON ts.cod_tipo_sanguineo = p.cod_tipo_sanguineo;			  
+		END IF;
+END;
+$BODY$;
+										  
+--SELECT * FROM biometria.fn_retorna_dados_pessoa(NULL)

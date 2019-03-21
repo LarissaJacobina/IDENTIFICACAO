@@ -1,0 +1,28 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_combo_endereco(opcao character varying, valor integer)
+	RETURNS SETOF biometria.ret_combo
+    LANGUAGE 'plpgsql'
+   	COST 100
+   	VOLATILE
+	
+AS $BODY$
+BEGIN 
+ 	
+	IF (opcao = 'localidade')
+			THEN
+				return query
+				SELECT cod_localidade::integer,dsc_localidade
+				FROM corporativo.tb_localidade 
+				WHERE cod_uf = valor
+				ORDER BY cod_localidade;
+	END IF;
+	IF (opcao = 'bairro')
+				THEN
+					return query
+					SELECT cod_bairro,dsc_bairro
+					FROM corporativo.tb_bairro
+					WHERE cod_localidade = valor
+					ORDER BY cod_bairro;
+	END IF;
+END;
+$BODY$;

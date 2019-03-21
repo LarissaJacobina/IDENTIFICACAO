@@ -1,0 +1,29 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_retorna_cpf(
+	_cpf character varying)
+    RETURNS SETOF biometria.ret_dados_pessoa
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+    ROWS 1000
+AS $BODY$
+
+DECLARE
+	cod bigint;
+BEGIN
+	cod := (SELECT cod_pessoa FROM corporativo.tb_pessoa WHERE num_cpf_pessoa = _cpf);
+
+IF (cod IS NOT NULL) THEN
+	return query
+	select * from biometria.fn_retorna_dados_pessoa(cod);
+ELSE
+
+END IF;
+
+END;
+
+$BODY$;
+
+ALTER FUNCTION biometria.fn_retorna_cpf(character varying)
+    OWNER TO postgres;
