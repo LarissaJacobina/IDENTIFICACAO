@@ -1,0 +1,43 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_bancarios_pessoa(
+		_cod_pessoa integer,
+		_num_agencia character varying,
+		_num_conta_corrente character varying,
+		_cod_banco character varying
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+
+BEGIN
+
+	-- INSERINDO OS DADOS BANCARIOS DO CANDIDATO NA TB_DADOS BANCARIOS
+	INSERT INTO corporativo.tb_dados_bancarios (
+		cod_pessoa,
+		num_agencia,
+		num_conta_corrente,
+		cod_banco
+		) values (
+		_cod_pessoa,
+		_num_agencia,
+		_num_conta_corrente,
+		_cod_banco
+		);
+	
+END;
+
+$BODY$;
+
+
+------------------------------------ SELECT TEST
+
+SELECT * FROM biometria.fn_insere_dados_bancarios_pessoa(
+	31665,
+	'077',
+	'261516546',
+	'070'
+	)

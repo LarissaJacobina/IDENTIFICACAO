@@ -1,0 +1,82 @@
+-- DROP FUNCTION biometria.fn_insere_dados_escolaridade_pessoa(integer, integer, integer, integer, character varying, integer, integer, integer, integer, date);
+
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_escolaridade_pessoa(
+	_cod_nivel_escolaridade integer,
+	_cod_tipo_graduacao integer,
+	_cod_tipo_lingua_estrangeira integer,
+	_cod_area_formacao integer,
+	_dsc_instituicao character varying,
+	_cod_tipo_identificacao integer,
+    _cod_orgao_expedidor integer,
+    _cod_pessoa integer,
+    _cod_identificacao_pessoa integer,
+	_dat_expedicao_documento date,
+	_cod_uf integer
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+
+BEGIN
+
+	-- INSERINDO OS DADOS DE ESCOLARIDADE DO CANDIDATO NA TB_NIVEL_ESCOLARIDADE
+	INSERT INTO corporativo.tb_nivel_escolaridade_pessoa (
+		cod_pessoa,
+		cod_nivel_escolaridade,
+		cod_tipo_graduacao,
+		cod_tipo_lingua_estrangeira,
+		cod_area_formacao,
+		dsc_instituicao
+		) values (
+		_cod_pessoa,
+		_cod_nivel_escolaridade,
+		_cod_tipo_graduacao,
+		_cod_tipo_lingua_estrangeira,
+		_cod_area_formacao,
+		_dsc_instituicao
+		);
+		
+	-- INSERINDO O ID CIVIL DO CANDIDATO NA TB_IDENTIFICACAO_PESSOA
+	INSERT INTO corporativo.tb_identificacao_pessoa (
+		cod_tipo_identificacao,
+    	cod_orgao_expedidor,
+    	cod_pessoa,
+    	cod_identificacao_pessoa,
+		dat_expedicao_documento,
+		cod_uf
+		) VALUES (
+		_cod_tipo_identificacao,
+    	_cod_orgao_expedidor,
+    	_cod_pessoa,
+    	_cod_identificacao_pessoa,
+		_dat_expedicao_documento,
+		_cod_uf
+		);
+	
+		
+END;
+
+$BODY$;
+
+
+
+-------------- SELECT DE TEST
+
+SELECT * FROM biometria.fn_insere_dados_escolaridade_pessoa(
+	1,
+	1,
+	1,
+	1,
+	'IFG',
+	5,
+	60,
+	13436,
+    27044,
+	'2013-03-20',
+	1
+	)
+	

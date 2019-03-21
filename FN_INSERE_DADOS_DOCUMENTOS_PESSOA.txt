@@ -1,0 +1,693 @@
+
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_documentos_pessoa(
+	_vlr_numero_documento character varying,
+	_cod_tipo_identificacao integer,
+	_cod_orgao_expedidor integer,
+	_dat_expedicao_documento date,
+	_dat_validade_documento date,
+	_vlr_numero_serie_documento character varying,
+	_dsc_livro character varying,
+	_dsc_folha character varying,
+	_dsc_zona_eleitoral character varying,
+	_dsc_sessao_eleitoral character varying,
+	
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+DECLARE
+    
+BEGIN
+
+-- INSERINDO OS DADOS DOs documentos
+---- PIS
+	INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	52
+);
+----ID MILITAR	
+	INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+	67
+);
+
+---- RESERVISTA
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	cod_tipo_identificacao,
+	vlr_numero_documento,
+	vlr_numero_serie_documento,
+	cod_orgao_expedidor,
+	---cod_tipo_comportamento_reservista, ADICIONAR?
+	dat_expedicao_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_cod_tipo_identificacao,
+	_vlr_numero_documento,
+	_vlr_numero_serie_documento,
+	_cod_orgao_expedidor,
+	----_cod_tipo_comportamento_reservista, ADICIONAR?
+	_dat_expedicao_documento,
+	_cod_tipo_identificacao,
+	7
+);
+
+----- CERTIDAO
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	cod_tipo_identificacao,
+	vlr_numero_documento,
+	dsc_livro,
+	dsc_folha,
+	----cod_tipo_identificacao   PERGUNTAR	
+)
+VALUES
+(
+	_cod_tipo_identificacao,
+	_vlr_numero_documento,
+	_dsc_livro,
+	_dsc_folha,
+	5 ----------perguntar 
+);
+
+----CARTEIRA DE TRABALHO
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dat_expedicao_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dat_expedicao_documento,
+	50
+);
+
+----TITULO ELEIRORAL
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dsc_sessao_eleitoral,
+	dsc_zona_eleitoral,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dsc_zona_eleitoral,
+	_dsc_sessao_eleitoral,
+	52
+);	
+
+------ CNH perguntar se vai add, pois não existe na tabela!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	---- cod_cnh, ADICIONAR?
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	---- _cod_cnh, ADICIONAR?
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+	52
+);	
+
+---- PASSAPORTE
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dat_validade_documento,
+	13
+);
+END;
+
+$BODY$;
+
+
+
+--------- VERSÃO 2
+
+
+
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_documentos_pessoa(
+	_vlr_numero_documento character varying,
+	_cod_tipo_identificacao integer,
+	_cod_orgao_expedidor integer,
+	_dat_expedicao_documento date,
+	_dat_validade_documento date,
+	_vlr_numero_serie_documento character varying,
+	_dsc_livro character varying,
+	_dsc_folha character varying,
+	_dsc_zona_eleitoral character varying,
+	_dsc_sessao_eleitoral character varying
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+
+DECLARE
+    
+BEGIN
+
+-- INSERINDO OS DADOS DOs documentos
+---- PIS
+	INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	52
+);
+----ID MILITAR	
+	INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+	67
+);
+
+---- RESERVISTA
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	cod_tipo_identificacao,
+	vlr_numero_documento,
+	vlr_numero_serie_documento,
+	cod_orgao_expedidor,
+	---cod_tipo_comportamento_reservista, ADICIONAR?
+	dat_expedicao_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_cod_tipo_identificacao,
+	_vlr_numero_documento,
+	_vlr_numero_serie_documento,
+	_cod_orgao_expedidor,
+	----_cod_tipo_comportamento_reservista, ADICIONAR?
+	_dat_expedicao_documento,
+	_cod_tipo_identificacao,
+	7
+);
+
+----- CERTIDAO
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	cod_tipo_identificacao,
+	vlr_numero_documento,
+	dsc_livro,
+	dsc_folha
+	 ----cod_tipo_identificacao   PERGUNTAR	
+)
+VALUES
+(
+	_cod_tipo_identificacao,
+	_vlr_numero_documento,
+	_dsc_livro,
+	_dsc_folha
+	--5 ----------perguntar 
+);
+
+----CARTEIRA DE TRABALHO
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dat_expedicao_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dat_expedicao_documento,
+	50
+);
+
+----TITULO ELEIRORAL
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dsc_sessao_eleitoral,
+	dsc_zona_eleitoral,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dsc_zona_eleitoral,
+	_dsc_sessao_eleitoral,
+	52
+);	
+
+------ CNH perguntar se vai add, pois não existe na tabela!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+/*INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	---- cod_cnh, ADICIONAR?
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	---- _cod_cnh, ADICIONAR?
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+	52
+);*/	
+
+---- PASSAPORTE
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+(
+	vlr_numero_documento,
+	dat_validade_documento,
+	cod_tipo_identificacao	
+)
+VALUES
+(
+	_vlr_numero_documento,
+	_dat_validade_documento,
+	13
+);
+END;
+
+$BODY$;
+
+--------------------------------------------------------------------------------------------------------------------VERSÃO 03
+
+
+
+--DROP FUNCTION biometria.fn_insere_dados_documentos_pessoa(integer, character varying, integer, integer, integer, date, date, character varying, character varying, character varying, character varying, character varying, character varying);
+
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_documentos_pessoa(
+	_cod_pessoa integer,
+	_vlr_numero_documento character varying,
+	_cod_tipo_identificacao integer,
+	_cod_orgao_expedidor integer,
+	_cod_uf integer,
+	_dat_expedicao_documento date,
+	_dat_validade_documento date,
+	_vlr_categoria_habilitacao character varying,
+	_vlr_numero_serie_documento character varying,
+	_dsc_livro character varying,
+	_dsc_folha character varying,
+	_dsc_zona_eleitoral character varying,
+	_dsc_sessao_eleitoral character varying
+	)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+    
+BEGIN
+
+----ID MILITAR	
+IF (_cod_tipo_identificacao = 67)
+		THEN
+			INSERT INTO corporativo.tb_identificacao_pessoa
+		(   cod_pessoa,
+			vlr_numero_documento,
+			cod_orgao_expedidor,
+			dat_expedicao_documento,
+			dat_validade_documento,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(   _cod_pessoa,
+			_vlr_numero_documento,
+			_cod_orgao_expedidor,
+			_dat_expedicao_documento,
+			_dat_validade_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+END IF;
+---- RESERVISTA
+
+IF (_cod_tipo_identificacao = 7)
+	THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(  cod_pessoa,
+			vlr_numero_documento,
+			vlr_numero_serie_documento,
+			cod_orgao_expedidor,
+			---cod_tipo_comportamento_reservista, ADICIONAR?
+			dat_expedicao_documento,
+ 			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(	_cod_pessoa,
+			_vlr_numero_documento,
+			_vlr_numero_serie_documento,
+			_cod_orgao_expedidor,
+			----_cod_tipo_comportamento_reservista, ADICIONAR?
+			_dat_expedicao_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+END IF;
+
+----CARTEIRA DE TRABALHO
+			IF (_cod_tipo_identificacao = 50)
+			THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(   cod_pessoa, 
+			vlr_numero_documento,
+			dat_expedicao_documento,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(   _cod_pessoa,
+			_vlr_numero_documento,
+			_dat_expedicao_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+		END IF;
+		
+----TITULO ELEIRORAL
+			IF (_cod_tipo_identificacao = 52)
+			THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(  cod_pessoa,
+			vlr_numero_documento,
+			dsc_sessao_eleitoral,
+			dsc_zona_eleitoral,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(  _cod_pessoa,
+			_vlr_numero_documento,
+			_dsc_zona_eleitoral,
+			_dsc_sessao_eleitoral,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);	
+	END IF;
+	
+------ CNH perguntar se vai add, pois não existe na tabela!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	IF (_cod_tipo_identificacao = 53)
+	THEN
+INSERT INTO corporativo.tb_identificacao_pessoa
+(  cod_pessoa,
+	vlr_numero_documento,
+	vlr_categoria_habilitacao,
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+ 	cod_uf,
+	cod_tipo_identificacao	
+)
+VALUES
+(  _cod_pessoa,
+	_vlr_numero_documento,
+	_vlr_categoria_habilitacao,
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+ 	_cod_uf,
+	_cod_tipo_identificacao
+);	
+END IF;
+---- PASSAPORTE
+	IF (_cod_tipo_identificacao = 13)
+	THEN
+INSERT INTO corporativo.tb_identificacao_pessoa
+(   cod_pessoa,
+	vlr_numero_documento,
+	dat_validade_documento,
+ 	cod_uf,
+	cod_tipo_identificacao	
+)
+VALUES
+(  _cod_pessoa,
+	_vlr_numero_documento,
+	_dat_validade_documento,
+ 	_cod_uf,
+	_cod_tipo_identificacao
+);
+----- CERTIDAO
+ELSE
+INSERT INTO corporativo.tb_identificacao_pessoa
+(   cod_pessoa,
+	cod_tipo_identificacao,
+	vlr_numero_documento,
+	dsc_livro,
+ cod_uf,
+	dsc_folha
+)
+VALUES
+(   _cod_pessoa,
+	_cod_tipo_identificacao,
+	_vlr_numero_documento,
+	_dsc_livro,
+ _cod_uf,
+	_dsc_folha
+);
+	END IF;	
+END;
+$BODY$;
+
+-------------------------------------------------------------------------------------VERSÃO 04 (FUNCIONA!!!!)
+CREATE OR REPLACE FUNCTION biometria.fn_insere_dados_documentos_pessoa(
+	_cod_pessoa integer,
+	_vlr_numero_documento character varying,
+	_cod_tipo_identificacao integer,
+	_cod_orgao_expedidor integer,
+	_cod_uf integer,
+	_dat_expedicao_documento date,
+	_dat_validade_documento date,
+	_vlr_categoria_habilitacao character varying,
+	_vlr_numero_serie_documento character varying,
+	_dsc_livro character varying,
+	_dsc_folha character varying,
+	_dsc_zona_eleitoral character varying,
+	_dsc_sessao_eleitoral character varying)
+    RETURNS void
+    LANGUAGE 'plpgsql'
+
+    COST 100
+    VOLATILE 
+AS $BODY$
+    
+BEGIN
+
+----ID MILITAR	
+IF (_cod_tipo_identificacao = 67) THEN
+
+INSERT INTO corporativo.tb_identificacao_pessoa
+		(   cod_pessoa,
+			vlr_numero_documento,
+			cod_orgao_expedidor,
+			dat_expedicao_documento,
+			dat_validade_documento,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(   _cod_pessoa,
+			_vlr_numero_documento,
+			_cod_orgao_expedidor,
+			_dat_expedicao_documento,
+			_dat_validade_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+
+---- RESERVISTA
+
+ELSEIF (_cod_tipo_identificacao = 7) THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(  cod_pessoa,
+			vlr_numero_documento,
+			vlr_numero_serie_documento,
+			cod_orgao_expedidor,
+			---cod_tipo_comportamento_reservista, ADICIONAR?
+			dat_expedicao_documento,
+ 			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(	_cod_pessoa,
+			_vlr_numero_documento,
+			_vlr_numero_serie_documento,
+			_cod_orgao_expedidor,
+			----_cod_tipo_comportamento_reservista, ADICIONAR?
+			_dat_expedicao_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+
+----CARTEIRA DE TRABALHO
+ELSEIF (_cod_tipo_identificacao = 50) THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(   cod_pessoa, 
+			vlr_numero_documento,
+			cod_orgao_expedidor,
+		 	dat_expedicao_documento,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(   _cod_pessoa,
+			_vlr_numero_documento,
+		 	_cod_orgao_expedidor,
+			_dat_expedicao_documento,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);
+				
+----TITULO ELEIRORAL
+ELSEIF (_cod_tipo_identificacao = 52) THEN
+		INSERT INTO corporativo.tb_identificacao_pessoa
+		(  cod_pessoa,
+			vlr_numero_documento,
+			dsc_sessao_eleitoral,
+		 	dsc_zona_eleitoral,	
+		 	cod_orgao_expedidor,
+			cod_uf,
+			cod_tipo_identificacao	
+		)
+		VALUES
+		(  _cod_pessoa,
+			_vlr_numero_documento,
+			_dsc_sessao_eleitoral,
+		 	_dsc_zona_eleitoral,
+			_cod_orgao_expedidor,
+			_cod_uf,
+			_cod_tipo_identificacao
+		);	
+
+	
+------ CNH perguntar se vai add, pois não existe na tabela!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ELSEIF (_cod_tipo_identificacao = 53) THEN
+INSERT INTO corporativo.tb_identificacao_pessoa
+(  cod_pessoa,
+	vlr_numero_documento,
+	vlr_categoria_habilitacao,
+	cod_orgao_expedidor,
+	dat_expedicao_documento,
+	dat_validade_documento,
+ 	cod_uf,
+	cod_tipo_identificacao	
+)
+VALUES
+(  _cod_pessoa,
+	_vlr_numero_documento,
+	_vlr_categoria_habilitacao,
+	_cod_orgao_expedidor,
+	_dat_expedicao_documento,
+	_dat_validade_documento,
+ 	_cod_uf,
+	_cod_tipo_identificacao
+);	
+
+---- PASSAPORTE
+ELSEIF (_cod_tipo_identificacao = 13) THEN
+INSERT INTO corporativo.tb_identificacao_pessoa
+(   cod_pessoa,
+	vlr_numero_documento,
+ 	cod_orgao_expedidor,
+	dat_validade_documento,
+ 	cod_uf,
+	cod_tipo_identificacao	
+)
+VALUES
+(  _cod_pessoa,
+	_vlr_numero_documento,
+ 	_cod_orgao_expedidor,
+	_dat_validade_documento,
+ 	_cod_uf,
+	_cod_tipo_identificacao
+);
+----- CERTIDAO
+ELSE
+INSERT INTO corporativo.tb_identificacao_pessoa
+(   cod_pessoa,
+	cod_tipo_identificacao,
+ 	cod_orgao_expedidor,
+	vlr_numero_documento,
+	dsc_livro,
+ cod_uf,
+	dsc_folha
+)
+VALUES
+(   _cod_pessoa,
+	_cod_tipo_identificacao,
+ 	_cod_orgao_expedidor,
+	_vlr_numero_documento,
+	_dsc_livro,
+ _cod_uf,
+	_dsc_folha
+);
+
+END IF;
+END;
+$BODY$
