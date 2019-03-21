@@ -1,0 +1,18 @@
+CREATE TABLE corporativo.tb_tipo_certidao_declarao
+	(
+		cod_tipo_certidao_declarao INTEGER NOT NULL,
+		dsc_tipo_certidao_declarao VARCHAR (80) NOT NULL
+	);
+	
+INSERT INTO corporativo.tb_tipo_certidao_declarao (cod_tipo_certidao_declarao, dsc_tipo_certidao_declarao)
+	VALUES
+	(1, 'CERTIDÃO DE ANTECEDENTES CRIMINAIS'),
+	(2, 'CERTIDÃO DA JUSTIÇA MILITAR'),
+	(3, 'CERTIDÃO DE ASSENTAMENTOS FUNCIONAIS'),
+	(4, 'CERTIDÃO NEGATIVA DA FAZENDA PÚBLICA'),
+	(5, 'CERTIDÃO DA JUSTIÇA FEDERAL'),
+	(6, 'CERTIDÃO DA JUSTIÇA ELEITORAL'),
+	(7, 'CERTIDÃO DE ANTECEDENTES DA POLÍCIA CIVIL'),
+	(8, 'CERTIDÃO DA JUSTIÇA ESTADUAL OU DISTRITAL'),
+	(9, 'CERTIDÃO DOS CARTÓRIOS DE EXECUÇÃO CIVIL'),
+	(10, 'CERTIDÃO DA JUSTIÇA MILITAR ESTADUAL OU DISTRITAL');

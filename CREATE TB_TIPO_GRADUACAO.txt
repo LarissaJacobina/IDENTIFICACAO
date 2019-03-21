@@ -1,0 +1,38 @@
+--------------------------- tb_tipo_graduacao
+CREATE TABLE corporativo.tb_tipo_graduacao
+(
+    cod_tipo_graduacao integer NOT NULL,
+    dsc_tipo_graduacao character varying(80)
+    
+);
+
+INSERT INTO corporativo.tb_tipo_graduacao (cod_tipo_graduacao,
+    dsc_tipo_graduacao)
+	VALUES
+	(1, 'BACHARELADO'),
+	(2, 'LICENCIATURA'),
+	(3, 'TECNÓLOGO'),
+	(4, 'SEQUENCIAL'),
+	(5, 'GRADUAÇÃO MODULADA');
+
+
+---------------------------tb_tipo_lingua_estrangeira
+
+CREATE TABLE corporativo.tb_tipo_lingua_estrangeira
+(
+    cod_tipo_lingua_estrangeira integer NOT NULL,
+    dsc_tipo_lingua_estrangeira character varying(80)
+    
+);
+
+INSERT INTO corporativo.tb_tipo_lingua_estrangeira (cod_tipo_lingua_estrangeira,
+    dsc_tipo_lingua_estrangeira)
+	VALUES
+	(1, 'INGLÊS'),
+	(2, 'ESPANHOL'),
+	(3, 'MANDARIM'),
+	(4, 'ALEMÃO'),
+	(5, 'ÁRABE'),
+	(6, 'FRANCÊS'),
+	(7, 'JAPONÊS'),
+	(0, 'PORTUGUÊS');

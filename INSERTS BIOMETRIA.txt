@@ -1,0 +1,66 @@
+INSERT INTO biometria.tb_cutis
+(
+	cod_cutis,
+	dsc_cutis
+)
+VALUES
+	(1, 'AMARELA'),
+	(2, 'BRANCA'),
+	(3, 'MORENA'),
+	(4, 'PARDA'),
+	(5 ,'PARDA CLARA'),
+	(6, 'PARDA ESCURA'),
+	(7, 'PRETA');
+	
+	-----------------------------------
+INSERT INTO biometria.tb_cor_olho
+(
+	cod_cor_olho,
+	dsc_cor_olho
+)
+VALUES
+	(1, 'AZUIS'),
+	(2, 'AZUIS CLARO'),
+	(3, 'AZULADOS'),
+	(4, 'CASTANHO CLARO'),
+	(5 ,'CASTANHO ESCURO'),
+	(6, 'CASTANHO MÉDIO'),
+	(7, 'VERDES'),	
+	(8, 'ESVERDEADOS'),
+	(9, 'PRETOS');
+	
+	
+	------------------------------
+	
+	
+INSERT INTO biometria.tb_cor_cabelo
+(
+	cod_cor_cabelo,
+	dsc_cor_cabelo
+)
+VALUES
+	(1, 'ALOIRADOS'),
+	(2, 'AVERMELHADO'),
+	(3, 'CASTANHO CLARO'),
+	(4, 'CASTANHO ESCURO'),
+	(5, 'CASTANHO MÉDIO'),
+	(6,'GRISALHO'),
+	(7, 'LOIRO'),
+	(8, 'PRETO'),	
+	(9, 'RUIVO'),
+	(10, 'TINGIDO');
+	
+	
+	------------------------------------------
+	
+INSERT INTO biometria.tb_tipo_cabelo
+(
+	cod_tipo_cabelo,
+	dsc_tipo_cabelo
+)
+VALUES
+	(1, 'CURTO'),
+	(2, 'CACHEADO'),
+	(3, 'LISO'),
+	(4, 'LONGO'),
+	(5, 'MÉDIO');

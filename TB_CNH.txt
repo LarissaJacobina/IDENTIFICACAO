@@ -1,0 +1,19 @@
+CREATE TABLE corporativo.tb_tipo_cnh (
+    cod_cnh INTEGER PRIMARY KEY,
+    dsc_tipo_cnh VARCHAR(2) NOT NULL);
+	
+INSERT INTO corporativo.tb_tipo_cnh 
+VALUES	(1,'A'),
+		(2,'B'),
+		(3,'C'),
+		(4,'D'),
+		(5,'E');
+
+--------------------------------------
+
+	IF (opcao = 'tipo_cnh')
+				THEN
+					return query
+					SELECT cod_cnh, dsc_tipo_cnh
+					FROM corporativo.tb_tipo_cnh
+					ORDER BY cod_cnh;

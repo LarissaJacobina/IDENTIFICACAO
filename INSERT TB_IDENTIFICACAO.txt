@@ -1,0 +1,7 @@
+INSERT INTO corporativo.tb_tipo_identificacao(
+	
+cod_tipo_identificacao, dsc_tipo_identificacao, cod_tipo_pessoa, sgl_tipo_identificacao, cod_tipo_origem_identificacao)
+	
+VALUES  
+		(68,'CERTIDÃO DE ÓBITO','F','COBT','N'),
+		(69,'CERTIDÃO DE NATURALIDADE','F','CNAT','N');

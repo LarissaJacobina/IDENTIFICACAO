@@ -1,0 +1,41 @@
+BEGIN;
+
+CREATE TYPE biometria.ret_combo AS
+(
+	cod integer,
+	dsc character varying
+);
+
+
+CREATE TYPE biometria.ret_dados_pessoa AS
+(
+	cod_pessoa bigint,
+	nom_completo_pessoa character varying,
+	num_cpf_pessoa character varying,
+	dsc_tipo_sanguineo character varying,
+	dat_nascimento_pessoa date,
+	dat_nascimento_pessoa_idade double precision,
+	nom_mae_pessoa character varying,
+	nom_pai_pessoa character varying,
+	cod_nacionalidade integer,
+	dsc_nacionalidade character varying,
+	dsc_uf_naturalidade character varying,
+	sgl_uf_naturalidade character varying,
+	cod_uf_naturalidade integer,
+	cep_endereco character varying,
+	dsc_endereco character varying,
+	cod_endereco_pessoa integer,
+	dsc_complemento_endereco character varying,
+	cod_uf integer,
+	sgl_uf character varying,
+	cod_localidade integer,
+	dsc_localidade character varying,
+	cod_bairro integer,
+	dsc_bairro character varying,
+	dsc_contato_pessoa_endereco_eletronico character varying,
+	dsc_contato_pessoa_celular character varying,
+	dsc_contato_pessoa_fone_residencial character varying
+);
+
+
+COMMIT;
